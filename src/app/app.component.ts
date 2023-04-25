@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Tarefa } from "./tarefa";
 import { HttpClient } from '@angular/common/http';
-document.querySelector('form').reset()
+
 @Component({
  selector: 'app-root',
  templateUrl: './app.component.html',
