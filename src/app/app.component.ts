@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { Tarefa } from "./tarefa";
 import { HttpClient } from '@angular/common/http';
+import { HttpHeaders } from '@angular/common/http';
+
+
 
 @Component({
  selector: 'app-root',
@@ -13,6 +16,7 @@ export class AppComponent {
  arrayDeTarefas: Tarefa[] = [];
  apiURL : string;
  usuarioLogado = false;
+ tokenJWT = '{ "token":""}';
  constructor(private http: HttpClient) {
  this.apiURL = 'https://todoapp-api-nine.vercel.app';
  this.READ_tarefas();
@@ -25,9 +29,13 @@ export class AppComponent {
  }
 
  READ_tarefas() {
-  this.http.get<Tarefa[]>(`${this.apiURL}/api/getAll`).subscribe(
-  resultado => this.arrayDeTarefas=resultado);
+  const idToken = new HttpHeaders().set("id-token", JSON.parse(this.tokenJWT).token);
+  this.http.get<Tarefa[]>(`${this.apiURL}/api/getAll`, { 'headers': idToken }).subscribe(
+  (resultado) => { this.arrayDeTarefas = resultado; this.usuarioLogado = true },
+  (error) => { this.usuarioLogado = false }
+  )
  }
+ 
 
  UPDATE_tarefa(tarefaAserModificada: Tarefa) {
   var indice = this.arrayDeTarefas.indexOf(tarefaAserModificada);
@@ -44,7 +52,17 @@ export class AppComponent {
   resultado => { console.log(resultado); this.READ_tarefas(); });
   }
  
+  login(username: string, password: string) {
+    var credenciais = { "nome": username, "senha": password }
+    this.http.post(`${this.apiURL}/api/login`, credenciais).subscribe(resultado => {
+    this.tokenJWT = JSON.stringify(resultado);
+    this.READ_tarefas();;
+    });
+   }
+
 }
+
+ 
  
 
 
