@@ -53,6 +53,7 @@ export class AppComponent {
   }
  
   login(username: string, password: string) {
+    console.log("a")
     var credenciais = { "nome": username, "senha": password }
     this.http.post(`${this.apiURL}/api/login`, credenciais).subscribe(resultado => {
     this.tokenJWT = JSON.stringify(resultado);
