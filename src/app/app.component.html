@@ -1,5 +1,6 @@
 <div class="main">
     <h1>João Vitor Viana - 216508<br>Marjorie Nascimento - 122383</h1>
+    <div *ngIf="usuarioLogado">
     <input class="lg-text-input" #campoNovoItem />
     <button class="btn-primary" (click)="CREATE_tarefa(campoNovoItem.value)">
     Adicionar Tarefa</button>
@@ -9,6 +10,13 @@
    (modificaTarefa)="UPDATE_tarefa(tarefaDoLoop)"></app-item>
     </li>
     </ul>
+</div>
+<div *ngIf="!usuarioLogado">
+<input #username placeholder="nome" class="lg-text-input" />
+<BR>
+<input #password placeholder="senha" class="lg-text-input" />
+<button class="btn-primary" >Login</button>
+</div>
    </div>
 <!-- ** Interpolação é o método de aproximar os valores dos conjuntos discretos. 
     Em matemática, denomina-se interpolação o método que permite construir um 

@@ -12,6 +12,7 @@ export class AppComponent {
  title = 'TODOapp';
  arrayDeTarefas: Tarefa[] = [];
  apiURL : string;
+ usuarioLogado = false;
  constructor(private http: HttpClient) {
  this.apiURL = 'https://todoapp-api-nine.vercel.app';
  this.READ_tarefas();
@@ -44,5 +45,7 @@ export class AppComponent {
   }
  
 }
+ 
+
 
 
