@@ -23,9 +23,11 @@ export class AppComponent {
  }
 
  CREATE_tarefa(descricaoNovaTarefa: string) {
+  const idToken = new HttpHeaders().set("id-token", JSON.parse(this.tokenJWT).token);
   var novaTarefa = new Tarefa(descricaoNovaTarefa, false);
-  this.http.post<Tarefa>(`${this.apiURL}/api/post`, novaTarefa).subscribe(
-  resultado => { console.log(resultado); this.READ_tarefas(); });
+  this.http.post<Tarefa>(`${this.apiURL}/api/post`, novaTarefa, { 'headers': idToken }).subscribe(
+  resultado => { console.log(resultado); this.READ_tarefas(); this.usuarioLogado = true },
+  (error) => { this.usuarioLogado = false });
  }
 
  READ_tarefas() {
@@ -38,19 +40,26 @@ export class AppComponent {
  
 
  UPDATE_tarefa(tarefaAserModificada: Tarefa) {
+  const idToken = new HttpHeaders().set("id-token", JSON.parse(this.tokenJWT).token);
   var indice = this.arrayDeTarefas.indexOf(tarefaAserModificada);
   var id = this.arrayDeTarefas[indice]._id;
   this.http.patch<Tarefa>(`${this.apiURL}/api/update/${id}`,
-  tarefaAserModificada).subscribe(
-  resultado => { console.log(resultado); this.READ_tarefas(); });
- }
+  { 'headers': idToken }).subscribe(
+  resultado => { console.log(resultado); this.READ_tarefas(); this.usuarioLogado = true },
+  (error) => { this.usuarioLogado = false }
+  )
+}
+ 
 
  DELETE_tarefa(tarefaAserRemovida: Tarefa) {
+  const idToken = new HttpHeaders().set("id-token", JSON.parse(this.tokenJWT).token);
   var indice = this.arrayDeTarefas.indexOf(tarefaAserRemovida);
   var id = this.arrayDeTarefas[indice]._id;
-  this.http.delete<Tarefa>(`${this.apiURL}/api/delete/${id}`).subscribe(
-  resultado => { console.log(resultado); this.READ_tarefas(); });
-  }
+  this.http.delete<Tarefa>(`${this.apiURL}/api/delete/${id}`,{ 'headers': idToken }).subscribe(
+  resultado => { console.log(resultado); this.READ_tarefas(); this.usuarioLogado = true },
+  (error) => { this.usuarioLogado = false }
+  )
+}
  
   login(username: string, password: string) {
     console.log("a")
