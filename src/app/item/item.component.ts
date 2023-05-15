@@ -6,9 +6,16 @@ import { Tarefa } from "../tarefa";
  styleUrls: ['./item.component.css']
 })
 export class ItemComponent {
-   emEdicao = false;
-   @Input() tarefa: Tarefa = new Tarefa("", false);
-   @Output() removeTarefa = new EventEmitter();
-   @Output() modificaTarefa = new EventEmitter();
-  }
-  
+ emEdicao = false;
+ @Input() tarefa: Tarefa = new Tarefa("", false);
+ @Output() delete_tarefa = new EventEmitter<string>();
+ @Output() modificaTarefa = new EventEmitter();
+
+ DELETE_tarefa(descricao: string){
+    this.delete_tarefa.emit(descricao)
+ }
+
+ UPDATE_tarefa(descricao: string){
+   this.modificaTarefa.emit(descricao)
+}
+}

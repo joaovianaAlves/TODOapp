@@ -64,7 +64,8 @@
             },
             "development": {
               "browserTarget": "TODOapp:build:development"
-            }
+            },
+            "proxyConfig": "./proxy.conf.json"
           },
           "defaultConfiguration": "development"
         },

@@ -24,19 +24,18 @@
 		<button (click)="CREATE_USER(username.value, password.value); username.value=''; password.value=''">Criar usuario</button>
 	</div>
 	<div *ngIf="usuarioLogado" class="all">
-		<h1>Felipe Cardoso - 218411</h1>
-		<h1>Ariane Lacerda - 215641</h1>
 		<div class="main">
-			<h1>To Do List</h1>
+			
+			<h1>João Vitor Viana Alves - 218411<br></h1><h1>Marjorie Nascimento</h1>
+			<div class="inputs">
+				<input class="lg-text-input" #campoNovoItem />
+				<button class="btn-primary" (click)="CREATE_tarefa(campoNovoItem.value)">Criar Tarefa</button>
+			</div>
 			<ul>
 				<li *ngFor="let tarefaDoLoop of arrayDeTarefas">
 					<app-item [tarefa]="tarefaDoLoop" (delete_tarefa)="DELETE_tarefa(tarefaDoLoop)" (modificaTarefa)="UPDATE_tarefa(tarefaDoLoop)"></app-item>
 				</li>
 			</ul>
-			<div class="inputs">
-				<input class="lg-text-input" #campoNovoItem />
-				<button class="btn-primary" (click)="CREATE_tarefa(campoNovoItem.value)">Criar Tarefa</button>
-			</div>
 		</div>
 	</div>
 	<div *ngIf="!usuarioLogado" class="main">
