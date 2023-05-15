@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Tarefa } from './tarefa';
-import { User } from './Users';
+import { User } from './user';
 import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 
