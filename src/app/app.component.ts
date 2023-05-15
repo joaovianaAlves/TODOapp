@@ -22,7 +22,7 @@ export class AppComponent {
 	tokenJWT = '{ "token":"", "isAdmin": false}';
 
 	constructor(private http: HttpClient) {
-		this.apiURL = 'https://todoapp-api-nine.vercel.app/';
+		this.apiURL = 'https://todoapp-api-nine.vercel.app';
 		//this.apiURL = 'http://localhost:3000';
 	}
 
