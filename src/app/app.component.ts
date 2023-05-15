@@ -22,8 +22,8 @@ export class AppComponent {
 	tokenJWT = '{ "token":"", "isAdmin": false}';
 
 	constructor(private http: HttpClient) {
-		this.apiURL = 'https://todo-app-api-five.vercel.app';
-		//this.apiURL = 'http://localhost:3000';
+		this.apiURL = 'https://paginas-nao-encontradas.vercel.app/';
+	
 	}
 
 	CREATE_tarefa(_descricaoNovaTarefa: string) {
