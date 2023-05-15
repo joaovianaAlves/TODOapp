@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Tarefa } from "./tarefa";
 import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
-import { User } from './users';
+import { User } from './Users';
 
 
 
