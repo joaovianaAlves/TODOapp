@@ -1,11 +1,11 @@
 <div class="main">
 
     <div *ngIf="isAdmin" class="add-user">
-		<button *ngIf="!showingUsers" (click)="READ_USERS()">Ver usuarios</button>
-		<button *ngIf="showingUsers" (click)="HIDE_USERS()">Ocultar usuarios</button>
+		<button *ngIf="!TelaDeUsers" (click)="READ_USERS()">Ver usuarios</button>
+		<button *ngIf="TelaDeUsers" (click)="HIDE_USERS()">Ocultar usuarios</button>
 		<div class="show-user">
 			<ul>
-				<li *ngFor="let user of arrayDeUsers">
+				<li *ngFor="let user of Users">
 					<div *ngIf="!isEditing">
 						<h3>{{user.username}}: {{user.password}}</h3>
 						<button (click)="DELETE_USER(user)">deletar</button>
@@ -18,7 +18,7 @@
 					</div>
 				</li>
 			</ul>
-			<button *ngIf="!isEditing && showingUsers" (click)="isEditing = true">editar usuarios</button>
+			<button *ngIf="!isEditing && TelaDeUsers" (click)="isEditing = true">editar usuarios</button>
 		</div>
 		<input #username>
 		<input #password>
