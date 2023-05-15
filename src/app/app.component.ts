@@ -23,7 +23,7 @@ export class AppComponent {
 
 	constructor(private http: HttpClient) {
 		this.apiURL = 'https://paginas-nao-encontradas.vercel.app/';
-	
+		//this.apiURL = 'http://localhost:3000';
 	}
 
 	CREATE_tarefa(_descricaoNovaTarefa: string) {
