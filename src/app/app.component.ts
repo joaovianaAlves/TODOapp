@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Tarefa } from "./tarefa";
 import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
+import { User } from './Users';
 
 
 
@@ -14,8 +15,11 @@ import { HttpHeaders } from '@angular/common/http';
 export class AppComponent {
  title = 'TODOapp';
  arrayDeTarefas: Tarefa[] = [];
+ Users: User[] = [];
  apiURL : string;
  usuarioLogado = false;
+ admLogado = false;
+ TelaDeUsers = false;
  tokenJWT = '{ "token":""}';
  constructor(private http: HttpClient) {
  this.apiURL = 'https://todoapp-api-nine.vercel.app';
@@ -69,6 +73,47 @@ export class AppComponent {
     this.READ_tarefas();;
     });
    }
+
+   /************************
+    *        ADM           *
+    ************************/
+
+   READ_USERS(){
+		const idToken = new HttpHeaders().set("id-token", JSON.parse(this.tokenJWT).token);
+		this.http.get<User[]>(`${this.apiURL}/api/getAllUsers`, { 'headers': idToken}).subscribe(
+		(resultado) => { this.Users=resultado; this.TelaDeUsers=true; this.usuarioLogado = true },
+		(error) => { this.usuarioLogado = false, this.admLogado=false }
+		)
+	}
+
+	DELETE_USER(userToRemove: User){
+		const idToken = new HttpHeaders().set("id-token", JSON.parse(this.tokenJWT).token);
+		var indice = this.Users.indexOf(userToRemove);
+ 		var id = this.Users[indice]._id;
+		if (!this.Users[indice].admLogado)
+ 		this.http.delete<User>(`${this.apiURL}/api/deleteUser/${id}`, { 'headers': idToken }).subscribe(
+ 		resultado => { console.log(resultado); this.READ_USERS(); this.usuarioLogado = true },
+		 (error) => { this.usuarioLogado = false, this.admLogado=false });
+
+	}
+
+	CREATE_USER(username: string, password: string) {
+		const idToken = new HttpHeaders().set("id-token", JSON.parse(this.tokenJWT).token);
+		var novaTarefa = new User(username, password, false);
+		this.http.post<User>(`${this.apiURL}/api/postUser`, novaTarefa, { 'headers': idToken }).subscribe(
+			resultado => { console.log(resultado); this.READ_USERS(); this.usuarioLogado = true },
+			(error) => { this.usuarioLogado = false, this.admLogado=false });
+	}
+
+	UPDATE_USER(userToChange: User) {
+		const idToken = new HttpHeaders().set("id-token", JSON.parse(this.tokenJWT).token);
+		var indice = this.Users.indexOf(userToChange);
+		var id = this.Users[indice]._id;
+		this.http.patch<User>(`${this.apiURL}/api/updateUser/${id}`,
+		userToChange, { 'headers': idToken }).subscribe(
+		resultado => { console.log(resultado); this.READ_USERS();  this.usuarioLogado = true },
+		(error) => { this.usuarioLogado = false, this.admLogado=false });
+	}
 
 }
 

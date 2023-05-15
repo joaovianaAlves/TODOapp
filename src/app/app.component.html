@@ -1,4 +1,30 @@
 <div class="main">
+
+    <div *ngIf="isAdmin" class="add-user">
+		<button *ngIf="!showingUsers" (click)="READ_USERS()">Ver usuarios</button>
+		<button *ngIf="showingUsers" (click)="HIDE_USERS()">Ocultar usuarios</button>
+		<div class="show-user">
+			<ul>
+				<li *ngFor="let user of arrayDeUsers">
+					<div *ngIf="!isEditing">
+						<h3>{{user.username}}: {{user.password}}</h3>
+						<button (click)="DELETE_USER(user)">deletar</button>
+					</div>
+					<div *ngIf="isEditing">
+						<input #username [value]="user.username">
+						<input #password [value]="user.password">
+						<button (click)="user.username=username.value; user.password=password.value; UPDATE_USER(user); isEditing=false">salvar</button>
+						<button (click)="isEditing = false">cancelar</button>
+					</div>
+				</li>
+			</ul>
+			<button *ngIf="!isEditing && showingUsers" (click)="isEditing = true">editar usuarios</button>
+		</div>
+		<input #username>
+		<input #password>
+		<button (click)="CREATE_USER(username.value, password.value); username.value=''; password.value=''">Criar usuario</button>
+	</div>
+
     <h1>João Vitor Viana - 216508<br>Marjorie Nascimento - 122383</h1>
     <div *ngIf="usuarioLogado">
     <input class="lg-text-input" #campoNovoItem />
