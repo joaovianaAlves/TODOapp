@@ -1,100 +1,96 @@
 import { Component } from '@angular/core';
-import { Tarefa } from "./tarefa";
+import { Tarefa } from './tarefa';
+import { User } from './user';
 import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
-import { User } from './Users';
-
-
 
 @Component({
- selector: 'app-root',
- templateUrl: './app.component.html',
- styleUrls: ['./app.component.css']
+	selector: 'app-root',
+	templateUrl: './app.component.html',
+	styleUrls: ['./app.component.css'],
 })
-
 export class AppComponent {
- title = 'TODOapp';
- arrayDeTarefas: Tarefa[] = [];
- Users: User[] = [];
- apiURL : string;
- usuarioLogado = false;
- admLogado = false;
- TelaDeUsers = false;
- isEditing = false
- tokenJWT = '{ "token":"","admLogado": false}';
- constructor(private http: HttpClient) {
- this.apiURL = 'https://todoapp-api-nine.vercel.app';
- this.READ_tarefas();
- }
+	title = 'TODOapp';
 
- CREATE_tarefa(descricaoNovaTarefa: string) {
-  const idToken = new HttpHeaders().set("id-token", JSON.parse(this.tokenJWT).token);
-  var novaTarefa = new Tarefa(descricaoNovaTarefa, false);
-  this.http.post<Tarefa>(`${this.apiURL}/api/post`, novaTarefa, { 'headers': idToken }).subscribe(
-  resultado => { console.log(resultado); this.READ_tarefas(); this.usuarioLogado = true },
-  (error) => { this.usuarioLogado = false });
- }
+	arrayDeTarefas: Tarefa[] = [];
+	arrayDeUsers: User[] = []
+	apiURL : string;
+	usuarioLogado = false;
+	isAdmin = false;
+	showingUsers = false
+	isEditing = false
+	tokenJWT = '{ "token":"", "isAdmin": false}';
 
- READ_tarefas() {
-  const idToken = new HttpHeaders().set("id-token", JSON.parse(this.tokenJWT).token);
-  this.http.get<Tarefa[]>(`${this.apiURL}/api/getAll`, { 'headers': idToken }).subscribe(
-  (resultado) => { this.arrayDeTarefas = resultado; this.usuarioLogado = true },
-  (error) => { this.usuarioLogado = false }
-  )
- }
- 
+	constructor(private http: HttpClient) {
+		this.apiURL = 'https://todo-app-api-five.vercel.app';
+		//this.apiURL = 'http://localhost:3000';
+	}
 
- UPDATE_tarefa(tarefaAserModificada: Tarefa) {
-  const idToken = new HttpHeaders().set("id-token", JSON.parse(this.tokenJWT).token);
-  var indice = this.arrayDeTarefas.indexOf(tarefaAserModificada);
-  var id = this.arrayDeTarefas[indice]._id;
-  this.http.patch<Tarefa>(`${this.apiURL}/api/update/${id}`,
-  { 'headers': idToken }).subscribe(
-  resultado => { console.log(resultado); this.READ_tarefas(); this.usuarioLogado = true },
-  (error) => { this.usuarioLogado = false }
-  )
-}
- 
+	CREATE_tarefa(_descricaoNovaTarefa: string) {
+		const idToken = new HttpHeaders().set("id-token", JSON.parse(this.tokenJWT).token);
+		var novaTarefa = new Tarefa(_descricaoNovaTarefa, false);
+		this.http.post<Tarefa>(`${this.apiURL}/api/post`, novaTarefa, { 'headers': idToken }).subscribe(
+			resultado => { console.log(resultado); this.READ_tarefas(); this.usuarioLogado = true },
+			(error) => { this.usuarioLogado = false, this.isAdmin=false });
+	}
 
- DELETE_tarefa(tarefaAserRemovida: Tarefa) {
-  const idToken = new HttpHeaders().set("id-token", JSON.parse(this.tokenJWT).token);
-  var indice = this.arrayDeTarefas.indexOf(tarefaAserRemovida);
-  var id = this.arrayDeTarefas[indice]._id;
-  this.http.delete<Tarefa>(`${this.apiURL}/api/delete/${id}`,{ 'headers': idToken }).subscribe(
-  resultado => { console.log(resultado); this.READ_tarefas(); this.usuarioLogado = true },
-  (error) => { this.usuarioLogado = false }
-  )
-}
- 
-  login(username: string, password: string) {
-    console.log("a")
-    var credenciais = { "nome": username, "senha": password }
-    this.http.post(`${this.apiURL}/api/login`, credenciais).subscribe(resultado => {
-    this.tokenJWT = JSON.stringify(resultado);
-    this.READ_tarefas();;
-    });
-   }
+	DELETE_tarefa(tarefaAserRemovida: Tarefa){
+		const idToken = new HttpHeaders().set("id-token", JSON.parse(this.tokenJWT).token);
+		var indice = this.arrayDeTarefas.indexOf(tarefaAserRemovida);
+ 		var id = this.arrayDeTarefas[indice]._id;
+ 		this.http.delete<Tarefa>(`${this.apiURL}/api/delete/${id}`, { 'headers': idToken }).subscribe(
+ 		resultado => { console.log(resultado); this.READ_tarefas(); this.usuarioLogado = true },
+		 (error) => { this.usuarioLogado = false, this.isAdmin=false });
 
-   /************************
-    *        ADM           *
-    ************************/
+	}
 
-   READ_USERS(){
+	READ_tarefas() {
+		const idToken = new HttpHeaders().set("id-token", JSON.parse(this.tokenJWT).token);
+		this.http.get<Tarefa[]>(`${this.apiURL}/api/getAll`, { 'headers': idToken }).subscribe(
+		(resultado) => { this.arrayDeTarefas = resultado; this.usuarioLogado = true; if (this.isAdmin) this.READ_USERS },
+		(error) => { this.usuarioLogado = false, this.isAdmin=false }
+		)
+	   }
+	   
+
+	UPDATE_tarefa(tarefaAserModificada: Tarefa) {
+		const idToken = new HttpHeaders().set("id-token", JSON.parse(this.tokenJWT).token);
+		var indice = this.arrayDeTarefas.indexOf(tarefaAserModificada);
+		var id = this.arrayDeTarefas[indice]._id;
+		this.http.patch<Tarefa>(`${this.apiURL}/api/update/${id}`,
+		tarefaAserModificada, { 'headers': idToken }).subscribe(
+		resultado => { console.log(resultado); this.READ_tarefas();  this.usuarioLogado = true },
+		(error) => { this.usuarioLogado = false, this.isAdmin=false });
+	}
+
+	login(username: string, password: string) {
+		const CORS = new HttpHeaders().set("Access-Control-Allow-Origin", "*")
+		var credenciais = { "username": username, "password": password }
+		this.http.post(`${this.apiURL}/api/login`, credenciais).subscribe(resultado => {
+		this.tokenJWT = JSON.stringify(resultado);
+		this.READ_tarefas();
+		if (JSON.parse(this.tokenJWT).isAdmin){
+			this.isAdmin = true;
+		}
+		});
+	}
+
+	READ_USERS(){
 		const idToken = new HttpHeaders().set("id-token", JSON.parse(this.tokenJWT).token);
 		this.http.get<User[]>(`${this.apiURL}/api/getAllUsers`, { 'headers': idToken}).subscribe(
-		(resultado) => { this.Users=resultado; this.TelaDeUsers=true; this.usuarioLogado = true },
-		(error) => { this.usuarioLogado = false, this.admLogado=false }
+		(resultado) => { this.arrayDeUsers=resultado; this.showingUsers=true; this.usuarioLogado = true },
+		(error) => { this.usuarioLogado = false, this.isAdmin=false }
 		)
 	}
 
 	DELETE_USER(userToRemove: User){
 		const idToken = new HttpHeaders().set("id-token", JSON.parse(this.tokenJWT).token);
-		var indice = this.Users.indexOf(userToRemove);
- 		var id = this.Users[indice]._id;
-		if (!this.Users[indice].admLogado)
+		var indice = this.arrayDeUsers.indexOf(userToRemove);
+ 		var id = this.arrayDeUsers[indice]._id;
+		if (!this.arrayDeUsers[indice].isAdmin)
  		this.http.delete<User>(`${this.apiURL}/api/deleteUser/${id}`, { 'headers': idToken }).subscribe(
  		resultado => { console.log(resultado); this.READ_USERS(); this.usuarioLogado = true },
-		 (error) => { this.usuarioLogado = false, this.admLogado=false });
+		 (error) => { this.usuarioLogado = false, this.isAdmin=false });
 
 	}
 
@@ -103,28 +99,23 @@ export class AppComponent {
 		var novaTarefa = new User(username, password, false);
 		this.http.post<User>(`${this.apiURL}/api/postUser`, novaTarefa, { 'headers': idToken }).subscribe(
 			resultado => { console.log(resultado); this.READ_USERS(); this.usuarioLogado = true },
-			(error) => { this.usuarioLogado = false, this.admLogado=false });
+			(error) => { this.usuarioLogado = false, this.isAdmin=false });
 	}
 
 	UPDATE_USER(userToChange: User) {
 		const idToken = new HttpHeaders().set("id-token", JSON.parse(this.tokenJWT).token);
-		var indice = this.Users.indexOf(userToChange);
-		var id = this.Users[indice]._id;
+		var indice = this.arrayDeUsers.indexOf(userToChange);
+		var id = this.arrayDeUsers[indice]._id;
 		this.http.patch<User>(`${this.apiURL}/api/updateUser/${id}`,
 		userToChange, { 'headers': idToken }).subscribe(
 		resultado => { console.log(resultado); this.READ_USERS();  this.usuarioLogado = true },
-		(error) => { this.usuarioLogado = false, this.admLogado=false });
+		(error) => { this.usuarioLogado = false, this.isAdmin=false });
 	}
 
-  HIDE_USERS(){
-		this.Users = [];
-		this.TelaDeUsers = false
+	HIDE_USERS(){
+		this.arrayDeUsers = [];
+		this.showingUsers = false
 	}
-
+	   
+	   
 }
-
- 
- 
-
-
-
