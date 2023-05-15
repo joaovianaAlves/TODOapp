@@ -20,7 +20,8 @@ export class AppComponent {
  usuarioLogado = false;
  admLogado = false;
  TelaDeUsers = false;
- tokenJWT = '{ "token":""}';
+ isEditing = false
+ tokenJWT = '{ "token":"","admLogado": false}';
  constructor(private http: HttpClient) {
  this.apiURL = 'https://todoapp-api-nine.vercel.app';
  this.READ_tarefas();
