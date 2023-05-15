@@ -1,6 +1,6 @@
 <div class="main">
 
-    <div *ngIf="isAdmin" class="add-user">
+    <div *ngIf="admLogado" class="add-user">
 		<button *ngIf="!TelaDeUsers" (click)="READ_USERS()">Ver usuarios</button>
 		<button *ngIf="TelaDeUsers" (click)="HIDE_USERS()">Ocultar usuarios</button>
 		<div class="show-user">

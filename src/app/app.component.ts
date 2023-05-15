@@ -116,6 +116,11 @@ export class AppComponent {
 		(error) => { this.usuarioLogado = false, this.admLogado=false });
 	}
 
+  HIDE_USERS(){
+		this.Users = [];
+		this.TelaDeUsers = false
+	}
+
 }
 
  
