@@ -24,7 +24,7 @@
 		<input class="input-users" #password>
 		<button class="btn-users" (click)="CREATE_USER(username.value, password.value); username.value=''; password.value=''">Criar usuario</button>
 	</div>
-	<div *ngIf="usuarioLogado" class="all">
+	<div *ngIf="usuarioLogado && !isAdmin" class="all">
 		<div class="main">
 			
 			<h1>João Vitor Viana Alves - 218411<br></h1><h1>Marjorie Nascimento</h1>

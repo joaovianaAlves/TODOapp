@@ -13,7 +13,7 @@ export class AppComponent {
 	title = 'TODOapp';
 
 	arrayDeTarefas: Tarefa[] = [];
-	arrayDeUsers: User[] = []
+	arrayDeUsers: User[] = [];
 	apiURL : string;
 	usuarioLogado = false;
 	isAdmin = false;
