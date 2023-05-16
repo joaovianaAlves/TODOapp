@@ -5,7 +5,7 @@
 				<h2>Create Users</h2>
 				
 				<input class="input-users" #nome>
-				<input class="input-users" #>
+				<input class="input-users" #senha>
 				<button class="btn-users" (click)="CREATE_USER(nome.value, senha.value); nome.value=''; senha.value=''">Create Users</button>
 			</div>
 			<div *ngIf="admLogado" class="show-user">
