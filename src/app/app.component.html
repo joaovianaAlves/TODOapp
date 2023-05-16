@@ -1,36 +1,36 @@
 <main>
-	<div *ngIf="isAdmin" class="container">
+	<div *ngIf="admLogado" class="container">
 		
-			<div *ngIf="isAdmin" class="add-user">
+			<div *ngIf="admLogado" class="add-user">
 				<h2>Create User</h2>
 				
-				<input class="input-users" #username>
-				<input class="input-users" #password>
-				<button class="btn-users" (click)="CREATE_USER(username.value, password.value); username.value=''; password.value=''">Create Users</button>
+				<input class="input-users" #nome>
+				<input class="input-users" #>
+				<button class="btn-users" (click)="CREATE_USER(nome.value, senha.value); nome.value=''; senha.value=''">Create Users</button>
 			</div>
-			<div *ngIf="isAdmin" class="show-user">
+			<div *ngIf="admLogado" class="show-user">
 
-					<button  class="btn-users" *ngIf="!showingUsers" (click)="READ_USERS()">Users</button>
+					<button  class="btn-users" *ngIf="!Usuarios" (click)="READ_USERS()">Users</button>
 
 					<ul>
 						<li *ngFor="let user of arrayDeUsers">
-							<div *ngIf="!isEditing">
-								<h3>{{user.username}}</h3>
+							<div *ngIf="!Editando">
+								<h3>{{user.nome}}</h3>
 								<button class="btn-users" (click)="DELETE_USER(user)">Delete</button>
 							</div>
-							<div *ngIf="isEditing">
-								<input class="input-users" #username [value]="user.username">
-								<input class="input-users" #password [value]="user.password">
-								<button class="btn-users" (click)="user.username=username.value; user.password=password.value; UPDATE_USER(user); isEditing=false">Save</button>
-								<button class="btn-users" (click)="isEditing = false">Cancel</button>
+							<div *ngIf="Editando">
+								<input class="input-users" #nome [value]="user.nome">
+								<input class="input-users" #senha [value]="user.senha">
+								<button class="btn-users" (click)="user.nome=nome.value; user.senha=senha.value; UPDATE_USER(user); Editando=false">Save</button>
+								<button class="btn-users" (click)="Editando = false">Cancel</button>
 							</div>
 						</li>
 					</ul>
-					<button class="btn-users" *ngIf="!isEditing && showingUsers" (click)="isEditing = true">Edit</button>
+					<button class="btn-users" *ngIf="!Editando && Usuarios" (click)="Editando = true">Edit</button>
 			</div>
 	</div>
 
-	<div *ngIf="usuarioLogado && !isAdmin" class="all">
+	<div *ngIf="usuarioLogado && !admLogado" class="all">
 		<div class="main">
 			<h1>TodoApp</h1>
 			<div class="inputs">
@@ -45,9 +45,9 @@
 		</div>
 	</div>
 	<div *ngIf="!usuarioLogado" class="main">
-		<input #username placeholder="nome" class="lg-text-input" />
+		<input #nome placeholder="nome" class="lg-text-input" />
 		<BR>
-		<input #password placeholder="senha" class="lg-text-input" />
-		<button class="btn-primary" (click)="login(username.value, password.value)" >Login</button>
+		<input #senha placeholder="senha" class="lg-text-input" />
+		<button class="btn-primary" (click)="login(nome.value, senha.value)" >Login</button>
 	</div>
 </main>

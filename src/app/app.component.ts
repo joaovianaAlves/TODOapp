@@ -16,10 +16,10 @@ export class AppComponent {
 	arrayDeUsers: User[] = [];
 	apiURL : string;
 	usuarioLogado = false;
-	isAdmin = false;
-	showingUsers = false
-	isEditing = false
-	tokenJWT = '{ "token":"", "isAdmin": false}';
+	admLogado = false;
+	Usuarios = false
+	Editando = false
+	tokenJWT = '{ "token":"", "admLogado": false}';
 
 	constructor(private http: HttpClient) {
 		this.apiURL = 'https://todoapp-api-nine.vercel.app';
@@ -31,7 +31,7 @@ export class AppComponent {
 		var novaTarefa = new Tarefa(_descricaoNovaTarefa, false);
 		this.http.post<Tarefa>(`${this.apiURL}/api/post`, novaTarefa, { 'headers': idToken }).subscribe(
 			resultado => { console.log(resultado); this.READ_tarefas(); this.usuarioLogado = true },
-			(error) => { this.usuarioLogado = false, this.isAdmin=false });
+			(error) => { this.usuarioLogado = false, this.admLogado=false });
 	}
 
 	DELETE_tarefa(tarefaAserRemovida: Tarefa){
@@ -40,15 +40,15 @@ export class AppComponent {
  		var id = this.arrayDeTarefas[indice]._id;
  		this.http.delete<Tarefa>(`${this.apiURL}/api/delete/${id}`, { 'headers': idToken }).subscribe(
  		resultado => { console.log(resultado); this.READ_tarefas(); this.usuarioLogado = true },
-		 (error) => { this.usuarioLogado = false, this.isAdmin=false });
+		 (error) => { this.usuarioLogado = false, this.admLogado=false });
 
 	}
 
 	READ_tarefas() {
 		const idToken = new HttpHeaders().set("id-token", JSON.parse(this.tokenJWT).token);
 		this.http.get<Tarefa[]>(`${this.apiURL}/api/getAll`, { 'headers': idToken }).subscribe(
-		(resultado) => { this.arrayDeTarefas = resultado; this.usuarioLogado = true; if (this.isAdmin) this.READ_USERS },
-		(error) => { this.usuarioLogado = false, this.isAdmin=false }
+		(resultado) => { this.arrayDeTarefas = resultado; this.usuarioLogado = true; if (this.admLogado) this.READ_USERS },
+		(error) => { this.usuarioLogado = false, this.admLogado=false }
 		)
 	   }
 	   
@@ -60,17 +60,17 @@ export class AppComponent {
 		this.http.patch<Tarefa>(`${this.apiURL}/api/update/${id}`,
 		tarefaAserModificada, { 'headers': idToken }).subscribe(
 		resultado => { console.log(resultado); this.READ_tarefas();  this.usuarioLogado = true },
-		(error) => { this.usuarioLogado = false, this.isAdmin=false });
+		(error) => { this.usuarioLogado = false, this.admLogado=false });
 	}
 
-	login(username: string, password: string) {
+	login(nome: string, senha: string) {
 		const CORS = new HttpHeaders().set("Access-Control-Allow-Origin", "*")
-		var credenciais = { "username": username, "password": password }
+		var credenciais = { "nome": nome, "senha": senha }
 		this.http.post(`${this.apiURL}/api/login`, credenciais).subscribe(resultado => {
 		this.tokenJWT = JSON.stringify(resultado);
 		this.READ_tarefas();
-		if (JSON.parse(this.tokenJWT).isAdmin){
-			this.isAdmin = true;
+		if (JSON.parse(this.tokenJWT).admLogado){
+			this.admLogado = true;
 		}
 		});
 	}
@@ -78,8 +78,8 @@ export class AppComponent {
 	READ_USERS(){
 		const idToken = new HttpHeaders().set("id-token", JSON.parse(this.tokenJWT).token);
 		this.http.get<User[]>(`${this.apiURL}/api/getAllUsers`, { 'headers': idToken}).subscribe(
-		(resultado) => { this.arrayDeUsers=resultado; this.showingUsers=true; this.usuarioLogado = true;},
-		(error) => { this.usuarioLogado = false, this.isAdmin=false }
+		(resultado) => { this.arrayDeUsers=resultado; this.Usuarios=true; this.usuarioLogado = true;},
+		(error) => { this.usuarioLogado = false, this.admLogado=false }
 		)
 	}
 
@@ -87,19 +87,19 @@ export class AppComponent {
 		const idToken = new HttpHeaders().set("id-token", JSON.parse(this.tokenJWT).token);
 		var indice = this.arrayDeUsers.indexOf(userToRemove);
  		var id = this.arrayDeUsers[indice]._id;
-		if (!this.arrayDeUsers[indice].isAdmin)
+		if (!this.arrayDeUsers[indice].admLogado)
  		this.http.delete<User>(`${this.apiURL}/api/deleteUser/${id}`, { 'headers': idToken }).subscribe(
  		resultado => { console.log(resultado); this.READ_USERS(); this.usuarioLogado = true },
-		 (error) => { this.usuarioLogado = false, this.isAdmin=false });
+		 (error) => { this.usuarioLogado = false, this.admLogado=false });
 
 	}
 
-	CREATE_USER(username: string, password: string) {
+	CREATE_USER(nome: string, senha: string) {
 		const idToken = new HttpHeaders().set("id-token", JSON.parse(this.tokenJWT).token);
-		var novaTarefa = new User(username, password, false);
+		var novaTarefa = new User(nome, senha, false);
 		this.http.post<User>(`${this.apiURL}/api/postUser`, novaTarefa, { 'headers': idToken }).subscribe(
 			resultado => { console.log(resultado); this.READ_USERS(); this.usuarioLogado = true },
-			(error) => { this.usuarioLogado = false, this.isAdmin=false });
+			(error) => { this.usuarioLogado = false, this.admLogado=false });
 	}
 
 	UPDATE_USER(userToChange: User) {
@@ -109,6 +109,6 @@ export class AppComponent {
 		this.http.patch<User>(`${this.apiURL}/api/updateUser/${id}`,
 		userToChange, { 'headers': idToken }).subscribe(
 		resultado => { console.log(resultado); this.READ_USERS();  this.usuarioLogado = true },
-		(error) => { this.usuarioLogado = false, this.isAdmin=false });
+		(error) => { this.usuarioLogado = false, this.admLogado=false });
 	}   
 }
