@@ -53,6 +53,7 @@
    }
 
    .show-user{
+    display: inline-block;
     max-width: 250px;
     width: 85%;
     margin: 2rem auto;
@@ -63,6 +64,7 @@
 
 
    .add-user{
+    display: inline-block;
     max-width: 250px;
     width: 85%;
     margin: 2rem auto;
@@ -72,7 +74,6 @@
     }
 
     .container{
-        display: inline-block;
         max-width: 500px;
         width: 85%;
         margin: 2rem auto;
