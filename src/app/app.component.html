@@ -1,7 +1,9 @@
 <main>
+	<h1>João Vitor Viana Alves - 218411<br></h1><h1>Marjorie Nascimento</h1>
 	<div *ngIf="isAdmin" class="container">
+		
 			<div *ngIf="isAdmin" class="add-user">
-				<h2>User management</h2>
+				<h2>Create User</h2>
 				
 				<input class="input-users" #username>
 				<input class="input-users" #password>
@@ -9,13 +11,12 @@
 			</div>
 			<div *ngIf="isAdmin" class="show-user">
 
-					<button *ngIf="!showingUsers" (click)="READ_USERS()">Ver usuarios</button>
-					<button *ngIf="showingUsers" (click)="HIDE_USERS()">Ocultar usuarios</button>
+					<button  class="btn-users" *ngIf="!showingUsers" (click)="READ_USERS()">Ver usuarios</button>
 
 					<ul>
 						<li *ngFor="let user of arrayDeUsers">
 							<div *ngIf="!isEditing">
-								<h3>{{user.username}}: {{user.password}}</h3>
+								<h3>{{user.username}}</h3>
 								<button class="btn-users" (click)="DELETE_USER(user)">deletar</button>
 							</div>
 							<div *ngIf="isEditing">
@@ -33,7 +34,6 @@
 	<div *ngIf="usuarioLogado && !isAdmin" class="all">
 		<div class="main">
 			
-			<h1>João Vitor Viana Alves - 218411<br></h1><h1>Marjorie Nascimento</h1>
 			<div class="inputs">
 				<input class="lg-text-input" #campoNovoItem />
 				<button class="btn-primary" (click)="CREATE_tarefa(campoNovoItem.value)">Criar Tarefa</button>

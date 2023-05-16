@@ -78,7 +78,7 @@ export class AppComponent {
 	READ_USERS(){
 		const idToken = new HttpHeaders().set("id-token", JSON.parse(this.tokenJWT).token);
 		this.http.get<User[]>(`${this.apiURL}/api/getAllUsers`, { 'headers': idToken}).subscribe(
-		(resultado) => { this.arrayDeUsers=resultado; this.showingUsers=true; this.usuarioLogado = true },
+		(resultado) => { this.arrayDeUsers=resultado; this.showingUsers=true; this.usuarioLogado = true;},
 		(error) => { this.usuarioLogado = false, this.isAdmin=false }
 		)
 	}
