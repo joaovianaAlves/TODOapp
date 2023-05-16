@@ -7,7 +7,7 @@
 				<input class="input-users" #password>
 				<button class="btn-users" (click)="CREATE_USER(username.value, password.value); username.value=''; password.value=''">Criar usuario</button>
 			</div>
-			<div class="show-user">
+			<div *ngIf="isAdmin" class="show-user">
 
 					<button *ngIf="!showingUsers" (click)="READ_USERS()">Ver usuarios</button>
 					<button *ngIf="showingUsers" (click)="HIDE_USERS()">Ocultar usuarios</button>
