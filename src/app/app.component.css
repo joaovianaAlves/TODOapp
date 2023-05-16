@@ -53,8 +53,6 @@
    }
 
    .show-user{
-    display: flex;
-    flex-flow: row wrap;
     max-width: 250px;
     width: 85%;
     margin: 2rem auto;
@@ -65,8 +63,6 @@
 
 
    .add-user{
-    display: flex;
-    flex-flow: row wrap;
     max-width: 250px;
     width: 85%;
     margin: 2rem auto;
@@ -76,6 +72,8 @@
     }
 
     .container{
+        display: flex;
+        flex-flow: row wrap;
         max-width: 500px;
         width: 85%;
         margin: 2rem auto;
