@@ -11,7 +11,6 @@ import { HttpHeaders } from '@angular/common/http';
 })
 export class AppComponent {
 	title = 'TODOapp';
-
 	arrayDeTarefas: Tarefa[] = [];
 	arrayDeUsers: User[] = [];
 	apiURL : string;
@@ -20,10 +19,8 @@ export class AppComponent {
 	Usuarios = false
 	Editando = false
 	tokenJWT = '{ "token":"", "admLogado": false}';
-
 	constructor(private http: HttpClient) {
 		this.apiURL = 'https://todoapp-api-nine.vercel.app';
-		//this.apiURL = 'http://localhost:3000';
 	}
 
 	/************
