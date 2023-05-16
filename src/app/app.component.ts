@@ -110,12 +110,5 @@ export class AppComponent {
 		userToChange, { 'headers': idToken }).subscribe(
 		resultado => { console.log(resultado); this.READ_USERS();  this.usuarioLogado = true },
 		(error) => { this.usuarioLogado = false, this.isAdmin=false });
-	}
-
-	HIDE_USERS(){
-		this.arrayDeUsers = [];
-		this.showingUsers = false
-	}
-	   
-	   
+	}   
 }
