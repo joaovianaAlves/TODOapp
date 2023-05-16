@@ -23,7 +23,7 @@
 								<input class="input-users" #username [value]="user.username">
 								<input class="input-users" #password [value]="user.password">
 								<button class="btn-users" (click)="user.username=username.value; user.password=password.value; UPDATE_USER(user); isEditing=false">Save</button>
-								<button class="btn-users" (click)="isEditing = false">cancelar</button>
+								<button class="btn-users" (click)="isEditing = false">Cancel</button>
 							</div>
 						</li>
 					</ul>
