@@ -7,27 +7,27 @@
 				
 				<input class="input-users" #username>
 				<input class="input-users" #password>
-				<button class="btn-users" (click)="CREATE_USER(username.value, password.value); username.value=''; password.value=''">Criar usuario</button>
+				<button class="btn-users" (click)="CREATE_USER(username.value, password.value); username.value=''; password.value=''">Create Users</button>
 			</div>
 			<div *ngIf="isAdmin" class="show-user">
 
-					<button  class="btn-users" *ngIf="!showingUsers" (click)="READ_USERS()">Ver usuarios</button>
+					<button  class="btn-users" *ngIf="!showingUsers" (click)="READ_USERS()">Users</button>
 
 					<ul>
 						<li *ngFor="let user of arrayDeUsers">
 							<div *ngIf="!isEditing">
 								<h3>{{user.username}}</h3>
-								<button class="btn-users" (click)="DELETE_USER(user)">deletar</button>
+								<button class="btn-users" (click)="DELETE_USER(user)">Delete</button>
 							</div>
 							<div *ngIf="isEditing">
 								<input class="input-users" #username [value]="user.username">
 								<input class="input-users" #password [value]="user.password">
-								<button class="btn-users" (click)="user.username=username.value; user.password=password.value; UPDATE_USER(user); isEditing=false">salvar</button>
+								<button class="btn-users" (click)="user.username=username.value; user.password=password.value; UPDATE_USER(user); isEditing=false">Save</button>
 								<button class="btn-users" (click)="isEditing = false">cancelar</button>
 							</div>
 						</li>
 					</ul>
-					<button class="btn-users" *ngIf="!isEditing && showingUsers" (click)="isEditing = true">editar usuarios</button>
+					<button class="btn-users" *ngIf="!isEditing && showingUsers" (click)="isEditing = true">Edit</button>
 			</div>
 	</div>
 
@@ -36,7 +36,7 @@
 			<h1>TodoApp</h1>
 			<div class="inputs">
 				<input class="lg-text-input" #campoNovoItem />
-				<button class="btn-primary" (click)="CREATE_tarefa(campoNovoItem.value)">Criar Tarefa</button>
+				<button class="btn-primary" (click)="CREATE_tarefa(campoNovoItem.value)">Create Task</button>
 			</div>
 			<ul>
 				<li *ngFor="let tarefaDoLoop of arrayDeTarefas">
