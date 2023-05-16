@@ -26,22 +26,16 @@ export class AppComponent {
 		//this.apiURL = 'http://localhost:3000';
 	}
 
+	/************
+    *  Tarefas  *
+    *************/
+
 	CREATE_tarefa(_descricaoNovaTarefa: string) {
 		const idToken = new HttpHeaders().set("id-token", JSON.parse(this.tokenJWT).token);
 		var novaTarefa = new Tarefa(_descricaoNovaTarefa, false);
 		this.http.post<Tarefa>(`${this.apiURL}/api/post`, novaTarefa, { 'headers': idToken }).subscribe(
 			resultado => { console.log(resultado); this.READ_tarefas(); this.usuarioLogado = true },
 			(error) => { this.usuarioLogado = false, this.admLogado=false });
-	}
-
-	DELETE_tarefa(tarefaAserRemovida: Tarefa){
-		const idToken = new HttpHeaders().set("id-token", JSON.parse(this.tokenJWT).token);
-		var indice = this.arrayDeTarefas.indexOf(tarefaAserRemovida);
- 		var id = this.arrayDeTarefas[indice]._id;
- 		this.http.delete<Tarefa>(`${this.apiURL}/api/delete/${id}`, { 'headers': idToken }).subscribe(
- 		resultado => { console.log(resultado); this.READ_tarefas(); this.usuarioLogado = true },
-		 (error) => { this.usuarioLogado = false, this.admLogado=false });
-
 	}
 
 	READ_tarefas() {
@@ -63,6 +57,61 @@ export class AppComponent {
 		(error) => { this.usuarioLogado = false, this.admLogado=false });
 	}
 
+	DELETE_tarefa(tarefaAserRemovida: Tarefa){
+		const idToken = new HttpHeaders().set("id-token", JSON.parse(this.tokenJWT).token);
+		var indice = this.arrayDeTarefas.indexOf(tarefaAserRemovida);
+ 		var id = this.arrayDeTarefas[indice]._id;
+ 		this.http.delete<Tarefa>(`${this.apiURL}/api/delete/${id}`, { 'headers': idToken }).subscribe(
+ 		resultado => { console.log(resultado); this.READ_tarefas(); this.usuarioLogado = true },
+		 (error) => { this.usuarioLogado = false, this.admLogado=false });
+
+	}
+
+	/***********
+    *  Admin  *
+    ***********/
+
+	 CREATE_USER(nome: string, senha: string) {
+		const idToken = new HttpHeaders().set("id-token", JSON.parse(this.tokenJWT).token);
+		var novaTarefa = new User(nome, senha, false);
+		this.http.post<User>(`${this.apiURL}/api/postUser`, novaTarefa, { 'headers': idToken }).subscribe(
+			resultado => { console.log(resultado); this.READ_USERS(); this.usuarioLogado = true },
+			(error) => { this.usuarioLogado = false, this.admLogado=false });
+	}
+
+	READ_USERS(){
+		const idToken = new HttpHeaders().set("id-token", JSON.parse(this.tokenJWT).token);
+		this.http.get<User[]>(`${this.apiURL}/api/getAllUsers`, { 'headers': idToken}).subscribe(
+		(resultado) => { this.arrayDeUsers=resultado; this.Usuarios=true; this.usuarioLogado = true;},
+		(error) => { this.usuarioLogado = false, this.admLogado=false }
+		)
+	}
+
+	UPDATE_USER(userToChange: User) {
+		const idToken = new HttpHeaders().set("id-token", JSON.parse(this.tokenJWT).token);
+		var indice = this.arrayDeUsers.indexOf(userToChange);
+		var id = this.arrayDeUsers[indice]._id;
+		this.http.patch<User>(`${this.apiURL}/api/updateUser/${id}`,
+		userToChange, { 'headers': idToken }).subscribe(
+		resultado => { console.log(resultado); this.READ_USERS();  this.usuarioLogado = true },
+		(error) => { this.usuarioLogado = false, this.admLogado=false });
+	} 
+
+	DELETE_USER(userToRemove: User){
+		const idToken = new HttpHeaders().set("id-token", JSON.parse(this.tokenJWT).token);
+		var indice = this.arrayDeUsers.indexOf(userToRemove);
+ 		var id = this.arrayDeUsers[indice]._id;
+		if (!this.arrayDeUsers[indice].admLogado)
+ 		this.http.delete<User>(`${this.apiURL}/api/deleteUser/${id}`, { 'headers': idToken }).subscribe(
+ 		resultado => { console.log(resultado); this.READ_USERS(); this.usuarioLogado = true },
+		 (error) => { this.usuarioLogado = false, this.admLogado=false });
+
+	} 
+
+	/************
+    *   Login   *
+    *************/
+	
 	login(nome: string, senha: string) {
 		const CORS = new HttpHeaders().set("Access-Control-Allow-Origin", "*")
 		var credenciais = { "nome": nome, "senha": senha }
@@ -75,40 +124,4 @@ export class AppComponent {
 		});
 	}
 
-	READ_USERS(){
-		const idToken = new HttpHeaders().set("id-token", JSON.parse(this.tokenJWT).token);
-		this.http.get<User[]>(`${this.apiURL}/api/getAllUsers`, { 'headers': idToken}).subscribe(
-		(resultado) => { this.arrayDeUsers=resultado; this.Usuarios=true; this.usuarioLogado = true;},
-		(error) => { this.usuarioLogado = false, this.admLogado=false }
-		)
-	}
-
-	DELETE_USER(userToRemove: User){
-		const idToken = new HttpHeaders().set("id-token", JSON.parse(this.tokenJWT).token);
-		var indice = this.arrayDeUsers.indexOf(userToRemove);
- 		var id = this.arrayDeUsers[indice]._id;
-		if (!this.arrayDeUsers[indice].admLogado)
- 		this.http.delete<User>(`${this.apiURL}/api/deleteUser/${id}`, { 'headers': idToken }).subscribe(
- 		resultado => { console.log(resultado); this.READ_USERS(); this.usuarioLogado = true },
-		 (error) => { this.usuarioLogado = false, this.admLogado=false });
-
-	}
-
-	CREATE_USER(nome: string, senha: string) {
-		const idToken = new HttpHeaders().set("id-token", JSON.parse(this.tokenJWT).token);
-		var novaTarefa = new User(nome, senha, false);
-		this.http.post<User>(`${this.apiURL}/api/postUser`, novaTarefa, { 'headers': idToken }).subscribe(
-			resultado => { console.log(resultado); this.READ_USERS(); this.usuarioLogado = true },
-			(error) => { this.usuarioLogado = false, this.admLogado=false });
-	}
-
-	UPDATE_USER(userToChange: User) {
-		const idToken = new HttpHeaders().set("id-token", JSON.parse(this.tokenJWT).token);
-		var indice = this.arrayDeUsers.indexOf(userToChange);
-		var id = this.arrayDeUsers[indice]._id;
-		this.http.patch<User>(`${this.apiURL}/api/updateUser/${id}`,
-		userToChange, { 'headers': idToken }).subscribe(
-		resultado => { console.log(resultado); this.READ_USERS();  this.usuarioLogado = true },
-		(error) => { this.usuarioLogado = false, this.admLogado=false });
-	}   
 }
