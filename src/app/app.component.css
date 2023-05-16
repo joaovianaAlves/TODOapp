@@ -53,7 +53,8 @@
    }
 
    .show-user{
-    display: inline-block;
+    display: flex;
+    flex-flow: row wrap;
     max-width: 250px;
     width: 85%;
     margin: 2rem auto;
@@ -64,7 +65,8 @@
 
 
    .add-user{
-    display: inline-block;
+    display: flex;
+    flex-flow: row wrap;
     max-width: 250px;
     width: 85%;
     margin: 2rem auto;
